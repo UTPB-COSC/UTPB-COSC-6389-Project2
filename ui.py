@@ -21,17 +21,20 @@ def train():
             return
 
         network = Network(activation=activation, num_hidden_layers=num_hidden_layers, hidden_layer_width=hidden_layer_width, learning_rate=learning_rate, num_inputs=num_inputs)
-        canvas.delete("all")  # Clear canvas before drawing
+        canvas.delete("all")  
+        # Clear canvas before drawing
         update_canvas_size(network)
         draw_network(network)
 
-        training_complete_label.grid_forget()  # Hide the training complete label if already visible
+        training_complete_label.grid_forget()  
+        # Hide the training complete label if already visible
 
         def run_training():
             for i in range(training_data_size):
                 data = RandData()
                 network.train(data)
-                if i % 100 == 0:  # Update network visualization every 100 iterations to reduce lag
+                if i % 100 == 0:  
+                    # Update network visualization every 100 iterations to reduce lag
                     canvas.after(0, lambda: draw_network(network))
 
             canvas.after(0, lambda: show_training_complete())
@@ -41,7 +44,8 @@ def train():
         training_thread.start()
 
     def update_canvas_size(network):
-        max_width = 50 + (len(network.hidden_layers) + 2) * 150  # Input, hidden layers, output
+        max_width = 50 + (len(network.hidden_layers) + 2) * 150  
+        # Input, hidden layers, output
         max_height = 100 + max(len(network.inputs), len(network.outputs), hidden_layer_width) * 50
         canvas.config(scrollregion=(0, 0, max_width, max_height))
         canvas.configure(width=min(1200, max_width), height=min(800, max_height))
@@ -91,7 +95,8 @@ def train():
         canvas.create_line(axon.input.x + neuron_scale * 0.6, axon.input.y, axon.output.x - neuron_scale * 0.6, axon.output.y, width=line_thickness, fill="#444")
         mid_x = (axon.input.x + axon.output.x) / 2
         mid_y = (axon.input.y + axon.output.y) / 2
-        canvas.create_text(mid_x, mid_y, text=f"{axon.weight:.2f}", font=("Arial", 8), fill="red")  # Decreased font size for better visibility
+        canvas.create_text(mid_x, mid_y, text=f"{axon.weight:.2f}", font=("Arial", 8), fill="red")  
+        # Decreased font size for better visibility
 
     def show_training_complete():
         training_complete_label.grid(row=6, column=0, columnspan=2, padx=10, pady=10)  # Show the training complete label
@@ -114,17 +119,20 @@ def train():
 
     ctk.CTkLabel(root, text="Number of Input Neurons:").grid(row=2, column=0, padx=10, pady=5, sticky="e")
     input_neurons_spinbox = ctk.CTkEntry(root)
-    input_neurons_spinbox.insert(0, "8")  # Default number of input neurons
+    input_neurons_spinbox.insert(0, "8")  
+    # Default number of input neurons
     input_neurons_spinbox.grid(row=2, column=1, padx=10, pady=5)
 
     ctk.CTkLabel(root, text="Number of Hidden Layers:").grid(row=3, column=0, padx=10, pady=5, sticky="e")
     hidden_layers_spinbox = ctk.CTkEntry(root)
-    hidden_layers_spinbox.insert(0, "1")  # Reduced default number of hidden layers to reduce lag 
+    hidden_layers_spinbox.insert(0, "1")  
+    # Reduced default number of hidden layers to reduce lag 
     hidden_layers_spinbox.grid(row=3, column=1, padx=10, pady=5)
 
     ctk.CTkLabel(root, text="Neurons per Hidden Layer:").grid(row=4, column=0, padx=10, pady=5, sticky="e")
     layer_width_spinbox = ctk.CTkEntry(root)
-    layer_width_spinbox.insert(0, "4")  # Reduced default number of neurons per hidden layer to reduce lag  
+    layer_width_spinbox.insert(0, "4")  
+    # Reduced default number of neurons per hidden layer to reduce lag  
     layer_width_spinbox.grid(row=4, column=1, padx=10, pady=5)
 
     ctk.CTkButton(root, text="Start Training", command=start_training).grid(row=5, column=0, columnspan=2, pady=10)
